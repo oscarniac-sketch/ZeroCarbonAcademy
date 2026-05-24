@@ -373,11 +373,11 @@ async function dbSave(record) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "save", data: record })
       });
+    } else {
+      const local = JSON.parse(localStorage.getItem("solis_zca") || "[]");
+      local.push(record);
+      localStorage.setItem("solis_zca", JSON.stringify(local));
     }
-    // Always also save locally as backup
-    const local = JSON.parse(localStorage.getItem("solis_zca") || "[]");
-    local.push(record);
-    localStorage.setItem("solis_zca", JSON.stringify(local));
   } catch(e) { console.warn("Save error:", e); }
   showSav(false);
 }
