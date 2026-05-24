@@ -367,18 +367,16 @@ async function dbSave(record) {
   showSav(true);
   try {
     if (USE_GAS) {
-      const formData = new FormData();
-      formData.append('data', JSON.stringify({ action: 'save', data: record }));
       await fetch(GAS_URL, {
         method: "POST",
         mode: "no-cors",
-        body: formData
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "save", data: record })
       });
-    } else {
-      const local = JSON.parse(localStorage.getItem("solis_zca") || "[]");
-      local.push(record);
-      localStorage.setItem("solis_zca", JSON.stringify(local));
     }
+    const local = JSON.parse(localStorage.getItem("solis_zca") || "[]");
+    local.push(record);
+    localStorage.setItem("solis_zca", JSON.stringify(local));
   } catch(e) { console.warn("Save error:", e); }
   showSav(false);
 }
